@@ -33,15 +33,26 @@ WWW:    Normally would have sent a KEY_HOMEPAGE. I have chosen to send KEY_I
 CLOSE:          KEY_M
 
 GREEN (A):      KEY_RED
+
 ORANGE (B):     KEY_GREEN
+
 BLUE (C):       KEY_YELLOW
+
 YELLOW (D):     KEY_BLUE
+
 [To match the harmony names for these keys and to match the normal layout for colours]
 
 Full Screen:    KEY_HOME
+
 Switch Windows: KEY_Q
+
 Folder:         KEY_O
+
 Desktop:        KEY_MEDIA
+
+FastForward:    KEY_F
+
+Rewind:         KEY_R
 
 
 Installing on the Raspberry PI
@@ -62,7 +73,9 @@ As XBMC grabs the event devices, you need to start Sensible-CVSB983 before it.
 
 
 :; ### As the system currently uses upstart the below will be correct
+
 :; ### Once SystemD comes along this will need to be changed.
+
 :; sudo cp sensible-cvsb983.conf /etc/init 
 
 Then restart the Pi and you should get a more sensible behaving remote.

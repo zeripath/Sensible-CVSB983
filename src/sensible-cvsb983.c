@@ -55,8 +55,8 @@ void set_key_bits(int fd) {
     if(ioctl(fd, UI_SET_KEYBIT, KEY_NEXTSONG) < 0) die("error: ioctl");
     if(ioctl(fd, UI_SET_KEYBIT, KEY_LEFT) < 0) die("error: ioctl");
     if(ioctl(fd, UI_SET_KEYBIT, KEY_RIGHT) < 0) die("error: ioctl");
-    if(ioctl(fd, UI_SET_KEYBIT, KEY_REWIND) < 0) die("error: ioctl");
-    if(ioctl(fd, UI_SET_KEYBIT, KEY_FASTFORWARD) < 0) die("error: ioctl");
+    if(ioctl(fd, UI_SET_KEYBIT, KEY_R) < 0) die("error: ioctl");
+    if(ioctl(fd, UI_SET_KEYBIT, KEY_F) < 0) die("error: ioctl");
     if(ioctl(fd, UI_SET_KEYBIT, KEY_PLAYPAUSE) < 0) die("error: ioctl");
     if(ioctl(fd, UI_SET_KEYBIT, KEY_STOPCD) < 0) die("error: ioctl");
     if(ioctl(fd, UI_SET_KEYBIT, KEY_HOME) < 0) die("error: ioctl");
@@ -297,14 +297,14 @@ int main(int argc, char* argv[])
                         if (modifier == (MOD_SHIFT | MOD_CTRL) || 
                                 (last_modifier == (MOD_SHIFT | MOD_CTRL) && input_ev[i].value == 0)) {
                             // REMOTE_KEY_REWIND
-                            send_key(KEY_REWIND, input_ev[i].value, fd);
+                            send_key(KEY_R, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_F:
                         if (modifier == (MOD_SHIFT | MOD_CTRL) || 
                                 (last_modifier == (MOD_SHIFT | MOD_CTRL) && input_ev[i].value == 0)) {
                             // KEY_FASTFORWARD
-                            send_key(KEY_FASTFORWARD, input_ev[i].value, fd);
+                            send_key(KEY_F, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_PLAYPAUSE:
