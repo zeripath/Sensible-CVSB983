@@ -14,3 +14,55 @@ virtual device created with udev and uinput.
 
 In the my case the usb device has the id: 1d57_ad02 and this is hardwired into
 code. You may need to adjust device address for your device.
+
+Keycodes emitted for each Key
+=============================
+
+I have chosen to emit different keys for the special keys - mostly because I 
+use a harmony remote. Admittedly some of these choices may seem non-sensible
+but looking at the code it should be easy a downstream user to change these to
+more appropriately suit their use. In any case the below are my choices:
+
+POWER:  Seems rather intermittant and I was unable to get any sensible behaviour out of this
+        I wouldn't be surprised if it was being sent down the mouse event
+
+EMAIL:  Normally would have sent a KEY_EMAIL, however, I have chosen to send a KEY_C 
+
+WWW:    Normally would have sent a KEY_HOMEPAGE. I have chosen to send KEY_I
+
+CLOSE:          KEY_M
+
+GREEN (A):      KEY_RED
+ORANGE (B):     KEY_GREEN
+BLUE (C):       KEY_YELLOW
+YELLOW (D):     KEY_BLUE
+[To match the harmony names for these keys and to match the normal layout for colours]
+
+Full Screen:    KEY_HOME
+Switch Windows: KEY_Q
+Folder:         KEY_O
+Desktop:        KEY_MEDIA
+
+
+Installing on the Raspberry PI
+==============================
+
+You will need to install libudev-dev:
+
+:; sudo apt-get install libudev-dev
+
+You'll also need to have a basic build-environment:
+
+:; sudo apt-get install build-essential
+
+Once you have these change in to Sensible-CVSB983 directory and use make
+to build.
+
+As XBMC grabs the event devices, you need to start Sensible-CVSB983 before it.
+
+
+:; ### As the system currently uses upstart the below will be correct
+:; ### Once SystemD comes along this will need to be changed.
+:; sudo cp sensible-cvsb983.conf /etc/init 
+
+Then restart the Pi and you should get a more sensible behaving remote.

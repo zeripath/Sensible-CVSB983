@@ -102,6 +102,14 @@ int main(int argc, char* argv[])
     char *device = "/dev/input/by-id/usb-1d57_ad02-event-kbd";
     char *output_device = "/dev/uinput";
 
+    printf("Initializing uinput\n");
+
+    fd = open(output_device, O_WRONLY | O_NONBLOCK);
+    if (fd == -1) {
+        printf("Failed to open uinput device.\n");
+        exit(1);
+    }
+
     _udev = udev_new();
     if (!_udev) {
         printf("Failed to open udev.\n");
@@ -126,14 +134,6 @@ int main(int argc, char* argv[])
 
     udev_device_unref(udev_dev);
     udev_unref(_udev);
-
-    printf("Initializing uinput");
-
-    fd = open(devPath, O_WRONLY | O_NONBLOCK);
-    if (fd == -1) {
-        printf("Failed to open uinput device.\n");
-        exit(1);
-    }
 
     uidev.id.bustype = BUS_VIRTUAL;
     if(ioctl(fd, UI_SET_EVBIT, EV_KEY) < 0)
@@ -175,7 +175,6 @@ int main(int argc, char* argv[])
         }
         
         for (i =0; i < rd/size; i++) {
-            printf("\x1b[%d;1m", 31 + input_ev[i].value);
             if (input_ev[i].type == EV_KEY) {
                 switch (input_ev[i].code) {
                     case KEY_LEFTSHIFT: 
@@ -194,54 +193,54 @@ int main(int argc, char* argv[])
                         modifier = (modifier | MOD_META) ^ ( input_ev[i].value == 0 ? MOD_META : 0 );
                         break;
                     case KEY_MAIL:
-                        //Email
+                        //Remote Key Email
                         send_key(KEY_C, input_ev[i].value, fd);
                         break;
                     case KEY_HOMEPAGE:
-                        //WWW
+                        //Remote Key WWW
                         send_key(KEY_I, input_ev[i].value, fd);
                         break;
                     case KEY_F4: 
                         if (modifier == MOD_ALT ||
                                 (last_modifier == MOD_ALT && input_ev[i].value == 0)) {
-                            //Close
+                            //Remote Key Close
                             send_key(KEY_M, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_A:
                         if (modifier == (MOD_CTRL | MOD_ALT) ||
                                 (last_modifier == (MOD_CTRL | MOD_ALT) && input_ev[i].value == 0)) {
-                            // Green on the stupid remote
+                            // Remote Key Green (A)
                             send_key(KEY_RED, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_2:
                         if (modifier == (MOD_CTRL | MOD_ALT) ||
                                 (last_modifier == (MOD_CTRL | MOD_ALT) && input_ev[i].value == 0)) {
-                            // Orange on the stupid remoet
+                            // Remote Key Orange (B)
                             send_key(KEY_GREEN, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_C:
                         if (modifier == (MOD_CTRL | MOD_ALT) ||
                                 (last_modifier == (MOD_CTRL | MOD_ALT) && input_ev[i].value == 0)) {
-                            // Blue
+                            // Remote Key Blue (C)
                             send_key(KEY_YELLOW, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_4:
                         if (modifier == (MOD_CTRL | MOD_ALT) ||
                                 (last_modifier == (MOD_CTRL | MOD_ALT) && input_ev[i].value == 0)) {
-                            // Yellow
+                            // Remote Key Yellow (D)
                             send_key(KEY_BLUE, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_PREVIOUSSONG: 
-                        // KEY_PREVIOUSSONG
+                        // REMOTE_KEY_PREVIOUSSONG
                         send_key(KEY_PREVIOUSSONG, input_ev[i].value, fd);
                         break;
                     case KEY_NEXTSONG:
-                        // KEY_NEXTSONG
+                        // REMOTE_KEY_NEXTSONG
                         send_key(KEY_NEXTSONG, input_ev[i].value, fd);
                         break;
                     case KEY_LEFT:
@@ -297,7 +296,7 @@ int main(int argc, char* argv[])
                     case KEY_B:
                         if (modifier == (MOD_SHIFT | MOD_CTRL) || 
                                 (last_modifier == (MOD_SHIFT | MOD_CTRL) && input_ev[i].value == 0)) {
-                            // KEY_REWIND
+                            // REMOTE_KEY_REWIND
                             send_key(KEY_REWIND, input_ev[i].value, fd);
                         }
                         break;
