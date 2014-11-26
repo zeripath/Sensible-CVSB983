@@ -42,13 +42,13 @@ YELLOW (D):     KEY_BLUE
 
 [To match the harmony names for these keys and to match the normal layout for colours]
 
-Full Screen:    KEY_HOME
-
 Switch Windows: KEY_Q
 
 Folder:         KEY_O
 
-Desktop:        KEY_MEDIA
+Full Screen:    KEY_HOME
+
+Desktop:        KEY_END
 
 FastForward:    KEY_F
 

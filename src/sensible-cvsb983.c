@@ -394,7 +394,7 @@ int main(int argc, char* argv[])
                     case KEY_D:
                         if (modifier == MOD_META || (last_modifier == MOD_META && input_ev[i].value == 0)) {
                             //printf("KEY_DESKTOP");
-                            send_key(KEY_MEDIA, input_ev[i].value, fd);
+                            send_key(KEY_END, input_ev[i].value, fd);
                         }
                         break;
                 }
