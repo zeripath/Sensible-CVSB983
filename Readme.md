@@ -13,15 +13,15 @@ This software uses EVIOGRAB to grab and hold the input event device associated
 with this device, interprets the keystrokes and then creates keystrokes on a 
 virtual device created with udev and uinput.
 
-In the my case the usb device has the id: 1d57_ad02 and this is hardwired into
+In my case the usb device has the id: 1d57_ad02 and this is hardwired into
 code. You may need to adjust device address for your device.
 
 An example of a product that code was built for is:
 
 http://www.amazon.co.uk/gp/product/B00DSKA6BW
 
-Installing on the Raspberry PI
-==============================
+Installing on the Raspberry Pi (and Pi 2!)
+==========================================
 
 You will need to install libudev-dev:
 
@@ -38,12 +38,16 @@ You'll also need to have a basic build-environment:
 Once you have these change in to Sensible-CVSB983 directory and use make
 to build.
 
-As XBMC grabs the event devices, you need to start Sensible-CVSB983 before it.
+As Kodi/XBMC grabs the event devices, you need to start Sensible-CVSB983 before it.
 
 ```
-:; ### As the system currently uses upstart the below will be correct
-:; ### Once SystemD comes along this will need to be changed.
+:; ### Raspbmc uses upstart, so to get this to start on startup you will need to:
 :; sudo cp sensible-cvsb983.conf /etc/init 
+```
+
+```
+:; ### OSMC uses systemd, so to get this to start on startup you will need to:
+:; sudo cp sensible-cvsb983.service /etc/systemd/system/multi-user.target.wants/
 ```
 
 Then restart the Pi and you should get a more sensible behaving remote.

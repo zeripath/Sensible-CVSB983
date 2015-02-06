@@ -1,0 +1,14 @@
+[Unit]
+Description = Sensible CVSB983
+After = remote-fs.target
+Before = mediacenter.service
+
+[Service]
+User = root
+Group = root
+Type = simple
+ExecStart = /usr/local/bin/sensible-cvsb983
+Restart = on-abort
+
+[Install]
+WantedBy = multi-user.target
