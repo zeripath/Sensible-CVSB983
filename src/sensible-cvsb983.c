@@ -85,8 +85,6 @@ int main(int argc, char* argv[])
     struct uinput_user_dev uidev;
     const char* devnode;
     char* devPath;
-    int orig_errno;
-    struct input_event ev;
     int fevdev = -1;
     int fd = -1;
     int result = 0;
@@ -95,7 +93,6 @@ int main(int argc, char* argv[])
     int i;
     int modifier = 0;
     int last_modifier = 0;
-    int value;
     int in_left = 0;
     int in_right = 0;
     char name[256] = "Unknown";
@@ -170,8 +167,18 @@ int main(int argc, char* argv[])
 
     while (1)
     {
-        if ((rd = read(fevdev, input_ev, size * 64)) < size) {
-            break;
+        // Clean-up input_ev first
+        char * buffer = (char*) input_ev;
+        int left_in_buffer = rd % size;
+        int count = 0;
+        while (count < left_in_buffer) {
+            buffer[count] = buffer[(rd / size) * size + count];
+            count++;
+        }
+        rd = left_in_buffer;
+        // Re-fill buffer
+        while (rd < size) {
+            rd += read(fevdev, input_ev, size * 64);
         }
         
         for (i =0; i < rd/size; i++) {
