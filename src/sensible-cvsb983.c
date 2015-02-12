@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
     }
 
     devPath = (char*) malloc(strlen(devnode) + 1);
-    
+
     strcpy(devPath, devnode);
 
     udev_device_unref(udev_dev);
@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
     uidev.id.vendor  = 0x1;
     uidev.id.product = 0x1;
     uidev.id.version = 1;
-    
+
     if(write(fd, &uidev, sizeof(uidev)) < 0)
         die("error: write");
 
@@ -180,11 +180,11 @@ int main(int argc, char* argv[])
         while (rd < size) {
             rd += read(fevdev, input_ev, size * 64);
         }
-        
+
         for (i =0; i < rd/size; i++) {
             if (input_ev[i].type == EV_KEY) {
                 switch (input_ev[i].code) {
-                    case KEY_LEFTSHIFT: 
+                    case KEY_LEFTSHIFT:
                     case KEY_RIGHTSHIFT:
                         modifier = (modifier | MOD_SHIFT) ^ ( input_ev[i].value == 0 ? MOD_SHIFT : 0 );
                         break;
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
                         //Remote Key WWW
                         send_key(KEY_I, input_ev[i].value, fd);
                         break;
-                    case KEY_F4: 
+                    case KEY_F4:
                         if (modifier == MOD_ALT ||
                                 (last_modifier == MOD_ALT && input_ev[i].value == 0)) {
                             //Remote Key Close
@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
                             send_key(KEY_BLUE, input_ev[i].value, fd);
                         }
                         break;
-                    case KEY_PREVIOUSSONG: 
+                    case KEY_PREVIOUSSONG:
                         // REMOTE_KEY_PREVIOUSSONG
                         send_key(KEY_PREVIOUSSONG, input_ev[i].value, fd);
                         break;
@@ -263,7 +263,7 @@ int main(int argc, char* argv[])
                                     }
                                     send_key(KEY_LEFT, 2, fd);
                                     break;
-                                case 0: 
+                                case 0:
                                     if (in_left == 1) {
                                         send_key(KEY_LEFT, 1, fd);
                                         in_left = 0;
@@ -301,14 +301,14 @@ int main(int argc, char* argv[])
                         }
                         break;
                     case KEY_B:
-                        if (modifier == (MOD_SHIFT | MOD_CTRL) || 
+                        if (modifier == (MOD_SHIFT | MOD_CTRL) ||
                                 (last_modifier == (MOD_SHIFT | MOD_CTRL) && input_ev[i].value == 0)) {
                             // REMOTE_KEY_REWIND
                             send_key(KEY_R, input_ev[i].value, fd);
                         }
                         break;
                     case KEY_F:
-                        if (modifier == (MOD_SHIFT | MOD_CTRL) || 
+                        if (modifier == (MOD_SHIFT | MOD_CTRL) ||
                                 (last_modifier == (MOD_SHIFT | MOD_CTRL) && input_ev[i].value == 0)) {
                             // KEY_FASTFORWARD
                             send_key(KEY_F, input_ev[i].value, fd);
@@ -329,7 +329,7 @@ int main(int argc, char* argv[])
                             send_key(KEY_HOME, input_ev[i].value, fd);
                         }
                         break;
-                    case KEY_MUTE: 
+                    case KEY_MUTE:
                         // KEY_MUTE
                         send_key(KEY_MUTE, input_ev[i].value, fd);
                         break;
@@ -406,7 +406,7 @@ int main(int argc, char* argv[])
                         break;
                 }
                 switch (input_ev[i].code) {
-                    case KEY_LEFTSHIFT: 
+                    case KEY_LEFTSHIFT:
                     case KEY_RIGHTSHIFT:
                     case KEY_LEFTALT:
                     case KEY_RIGHTALT:
