@@ -25,8 +25,15 @@
 #define MOD_ALT 4
 #define MOD_META 8
 
+static int debug = 0;
+
 void send_key(int code, int value, int fd) {
     struct input_event ev;
+    if (debug) {
+        printf("\x1b[%d;1m", (34 + value));
+        printf("%d", code);
+        printf("\x1b[0m;");
+    }
     memset(&ev, 0, sizeof(struct input_event));
     ev.type = EV_KEY;
     ev.code = code;
@@ -89,7 +96,7 @@ int main(int argc, char* argv[])
     int fd = -1;
     int result = 0;
     int size = sizeof(struct input_event);
-    int rd;
+    int rd = 0;
     int i;
     int modifier = 0;
     int last_modifier = 0;
@@ -100,6 +107,12 @@ int main(int argc, char* argv[])
     char *output_device = "/dev/uinput";
 
     printf("Initializing uinput\n");
+
+    if (argc > 1) {
+        if (strcmp("--debug", argv[1]) == 0) {
+            debug = 1;
+        }
+    }
 
     fd = open(output_device, O_WRONLY | O_NONBLOCK);
     if (fd == -1) {
@@ -154,14 +167,13 @@ int main(int argc, char* argv[])
 
     fevdev = open(device, O_RDONLY);
     if (fevdev == -1) {
-        printf("Failed to open event device.\n");
+        printf("Failed to open event device for the keyboard.\n");
         exit(1);
     }
-
     result = ioctl(fevdev, EVIOCGNAME(sizeof(name)), name);
     printf ("Reading From : %s (%s)\n", device, name);
 
-    printf("Getting exclusive access: ");
+    printf("Getting exclusive access for the keyboard device: ");
     result = ioctl(fevdev, EVIOCGRAB, 1);
     printf("%s\n", (result == 0) ? "SUCCESS" : "FAILURE");
 
@@ -178,11 +190,16 @@ int main(int argc, char* argv[])
         rd = left_in_buffer;
         // Re-fill buffer
         while (rd < size) {
-            rd += read(fevdev, input_ev, size * 64);
+            rd += read(fevdev, input_ev + rd, size * 64);
         }
 
         for (i =0; i < rd/size; i++) {
             if (input_ev[i].type == EV_KEY) {
+                if (debug) {
+                    printf("\x1b[%d;1m", (31 + input_ev[i].value));
+                    printf("%d", input_ev[i].code);
+                    printf("\x1b[0m;");
+                }
                 switch (input_ev[i].code) {
                     case KEY_LEFTSHIFT:
                     case KEY_RIGHTSHIFT:
